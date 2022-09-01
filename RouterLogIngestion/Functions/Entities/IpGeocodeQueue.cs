@@ -37,7 +37,9 @@ namespace RouterLogIngestion.Functions.Entities
             if (GeocodeBatchQueue.Count > 100)
             {
                 _telemetryClient.TrackEvent("GeocodeBatchCreated");
-                // do something
+
+                Entity.Current.StartNewOrchestration(nameof(GeocodeIpAddressBatchOrchestration), GeocodeBatchQueue);
+
                 GeocodeBatchQueue.Clear();
             }
         }
