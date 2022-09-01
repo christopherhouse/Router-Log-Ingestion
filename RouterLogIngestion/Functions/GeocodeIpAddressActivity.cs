@@ -1,12 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
-namespace RouterLogIngestion.Functions
+namespace RouterLogIngestion.Functions;
+
+public class GeocodeIpAddressActivity
 {
-    public class GeocodeIpAddressActivity
+    private readonly ILogger<GeocodeIpAddressActivity> _logger;
+
+    public GeocodeIpAddressActivity(ILogger<GeocodeIpAddressActivity> logger)
     {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
+
+
 }
