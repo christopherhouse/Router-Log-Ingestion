@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace RouterLogIngestion.Models;
 
@@ -61,6 +62,14 @@ public class IpTablesLogEntry
 
     [JsonProperty("Ack")]
     public string Ack { get; set; }
+
+    public static IpTablesLogEntry FromJsonString(string jsonString)
+    {
+        var jObject = JObject.Parse(jsonString);
+        var logEntry = jObject["iptables"].ToObject<IpTablesLogEntry>();
+
+        return logEntry;
+    }
 
     public static IpTablesLogEntry FromSyslogMessage(JObject syslogMessage)
     {
