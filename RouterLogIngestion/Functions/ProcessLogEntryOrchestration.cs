@@ -26,7 +26,7 @@ public class ProcessLogEntryOrchestration
         var jsonString = context.GetInput<string>();
         var logEntry = IpTablesLogEntry.FromJsonString(jsonString);
 
-        await context.CallEntityAsync(new EntityId(nameof(IpGeocodeQueue), Constants.Entities.EntityId), nameof(IpGeocodeQueue.AddLogEntryToQueue), logEntry);
+        await context.CallEntityAsync(new EntityId(nameof(IpGeocodeQueue), Constants.Entities.QueueEntityId), nameof(IpGeocodeQueue.AddLogEntryToQueue), logEntry);
 
         return await Task.FromResult(GetLogEntryFromString(jsonString));
     }
