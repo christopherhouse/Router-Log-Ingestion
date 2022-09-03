@@ -29,6 +29,7 @@ namespace RouterLogIngestion.Functions.Entities
 
         public void AddLogEntryToQueue(IpTablesLogEntry logEntry)
         {
+            // TODO:  Add some smarts here, don't add a source IP to the queue more than once.  Hold duplicates back somehow?  Another entity?  Yeah, another entity :D
             GeocodeBatchQueue.Add(logEntry);
 
             _logger.LogInformation($"Added FW block from {logEntry.Src} to queue");
