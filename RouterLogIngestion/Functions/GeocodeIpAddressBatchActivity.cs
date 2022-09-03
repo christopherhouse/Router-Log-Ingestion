@@ -32,7 +32,8 @@ public class GeocodeIpAddressBatchActivity
     }
 
     [FunctionName(nameof(GeocodeIpAddressBatchActivity))]
-    public async Task GeocodeIpAddressBatch([ActivityTrigger] List<IpTablesLogEntry> logEntry)
+    public async Task GeocodeIpAddressBatch([ActivityTrigger] List<IpTablesLogEntry> logEntry,
+        [EventHub("logs", Connection = "eventHubConnectionString")] IAsyncCollector<MondoBase> data)
     {
         try
         {
@@ -53,6 +54,13 @@ public class GeocodeIpAddressBatchActivity
             {
                 @event.Properties.Add($"IP Address {counter.ToString()}", item.Country);
                 counter += 1;
+            }
+
+            var resultArray = body.ToArray();
+
+            for (var i = 0; i < resultArray.Length; i++)
+            {
+                await data.AddAsync(new MondoBase(resultArray[i], logEntry[i]));
             }
 
             _telemetryClient.TrackEvent(@event);
