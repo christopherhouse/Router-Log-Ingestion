@@ -1,5 +1,6 @@
 param storageAccountName string
 param containersToCreate array
+param homeIpAddress string
 param location string
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
@@ -16,6 +17,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
     networkAcls: {
       defaultAction: 'Deny'
       bypass: 'AzureServices'
+      ipRules: [
+         {
+          value: homeIpAddress
+          action: 'Allow'
+         }
+      ]
     }
     supportsHttpsTrafficOnly: true
   }
