@@ -31,8 +31,10 @@ public class GeocodeIpAddressBatchActivity
         _telemetryClient = telemetryClient ?? throw new ArgumentNullException(nameof(telemetryClient));
     }
 
+    // TODO: Move persistence to another activity function, I think.  We may have more than one Function outputting
     [FunctionName(nameof(GeocodeIpAddressBatchActivity))]
-    public async Task GeocodeIpAddressBatch([ActivityTrigger] List<IpTablesLogEntry> logEntry)
+    public async Task GeocodeIpAddressBatch([ActivityTrigger] List<IpTablesLogEntry> logEntry,
+        [EventHub("logs", Connection = "eventHubConnectionString")] IAsyncCollector<MondoBase> data)
     {
         try
         {
@@ -53,6 +55,14 @@ public class GeocodeIpAddressBatchActivity
             {
                 @event.Properties.Add($"IP Address {counter.ToString()}", item.Country);
                 counter += 1;
+            }
+
+            foreach (var item in logEntry)
+            {
+                foreach (var gitem in body)
+                {
+                    await data.AddAsync(new MondoBase(gitem, item));
+                }
             }
 
             _telemetryClient.TrackEvent(@event);
