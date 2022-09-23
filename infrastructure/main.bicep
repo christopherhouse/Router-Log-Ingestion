@@ -2,13 +2,15 @@ param storageAccountName string
 param homeIpAddress string
 param logAnalyticsWorkspaceName string
 param appInsightsName string
+param keyVaultName string
 
 param location string = resourceGroup().location
 param deploymentSuffix string = utcNow('MMddyyyy_HHmmss')
 
-var storageAccountDeploymentName = 'storageaccount-${deploymentSuffix}'
-var logAnalyticsDeploymentName = 'loganalytics-${deploymentSuffix}'
-var appinsightsDeploymentName = 'appinsights-${deploymentSuffix}'
+var storageAccountDeploymentName = '${storageAccountName}-${deploymentSuffix}'
+var logAnalyticsDeploymentName = '${logAnalyticsWorkspaceName}-${deploymentSuffix}'
+var appinsightsDeploymentName = '${appInsightsName}-${deploymentSuffix}'
+var keyVaultDeploymentName = '${keyVaultName}-${deploymentSuffix}'
 
 var functionContainers = [
   'azure-webjobs-secrets', 'azure-webjobs-hosts'
@@ -38,5 +40,13 @@ module appInsights 'modules/applicationinsights.bicep' = {
     location: location
     appInsightsName: appInsightsName
     logAnalyticsWorkspaceId: logAnalyticsWorkspace.outputs.id
+  }
+}
+
+module keyVault 'modules/keyvault.bicep' = {
+  name: keyVaultDeploymentName
+  params: {
+    keyVaultName: keyVaultName
+    location: location
   }
 }

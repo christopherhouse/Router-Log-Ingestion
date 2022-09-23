@@ -13,6 +13,9 @@
         },
         "appInsightsName": {
           "value": "cmhaitest01"
-        }   
+        },
+        "keyVaultName": {
+            "value": "cmhkvault01"
+        }
     }
 }
