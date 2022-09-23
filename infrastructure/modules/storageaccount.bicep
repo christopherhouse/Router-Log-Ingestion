@@ -1,4 +1,5 @@
 param storageAccountName string
+param containersToCreate array
 param location string
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
@@ -19,6 +20,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
     supportsHttpsTrafficOnly: true
   }
 }
+
+resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-05-01' = {
+  name: 'default'
+  parent: storageAccount
+}
+
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-05-01' = [for containerName in containersToCreate: {
+  name: containerName
+  parent: blobServices
+}]
 
 output name string = storageAccount.name
 output id string = storageAccount.id
