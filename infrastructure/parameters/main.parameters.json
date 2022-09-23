@@ -7,6 +7,12 @@
         },
         "homeIpAddress": {
             "value": "66.41.164.120"
-        }
+        },
+        "logAnalyticsWorkspaceName": {
+            "value": "cmhlawstest01"
+        },
+        "appInsightsName": {
+          "value": "cmhaitest01"
+        }   
     }
-  }
+}
