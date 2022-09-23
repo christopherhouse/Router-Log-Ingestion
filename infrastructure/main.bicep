@@ -5,7 +5,9 @@ param appInsightsName string
 param keyVaultName string
 param keyVaultAdminObjectId string
 param cosmosAccountName string
-param databasesToCreate array
+param databaseName string
+param containerName string
+param partitionKeyPath string
 
 param location string = resourceGroup().location
 param deploymentSuffix string = utcNow('MMddyyyy_HHmmss')
@@ -63,9 +65,10 @@ module cosmosDb 'modules/cosmosaccount.bicep' = {
   name: cosmosDeploymentName
   params: {
     location: location
-    containersToCreate: []
+    containerName: containerName
+    partitionKeyPath: partitionKeyPath
     cosmosAccountName: cosmosAccountName
-    databasesToCreate: databasesToCreate
+    databaseName: databaseName
     homeIpAddress: homeIpAddress
   }
 }

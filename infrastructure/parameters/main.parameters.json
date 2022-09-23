@@ -23,10 +23,14 @@
         "cosmosAccountName": {
             "value": "cmhcosmosacct02"
         },
-        "databasesToCreate": {
-            "value": [
-              "cmhdb01"
-            ]
+        "databaseName": {
+            "value": "cmhdb01"
+        },
+        "containerName": {
+            "value": "cmhcontainer01"
+        },
+        "partitionKeyPath": {
+            "value": "/id"
         }
     }
 }
