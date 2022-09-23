@@ -1,6 +1,6 @@
 param functionAppName string
 param location string
-@secure()
+//@secure()
 param storageConnectionString string
 @secure()
 param appInsightsInstrumentationKey string
@@ -8,7 +8,7 @@ param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
 
 var appServicePlanName = '${functionAppName}-asp'
-var contentShare = uniqueString(functionAppName)
+var contentShare = 'content'
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: appServicePlanName

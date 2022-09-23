@@ -98,7 +98,7 @@ module functionApp 'modules/functionapp.bicep' = {
     appInsightsConnectionString: appInsights.outputs.connectionString
     appInsightsInstrumentationKey: appInsights.outputs.instrumentationKey
     functionAppName: functionAppName
-    storageConnectionString: listKeys(resourceId(subscription().subscriptionId, resourceGroup().name, storageRef.type, storageRef.name), storageRef.apiVersion).keys[0].value
+    storageConnectionString: 'DefaultEndpointsProtocol=https;AccountName=${storageRef.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(resourceId(subscription().subscriptionId, resourceGroup().name, storageRef.type, storageRef.name), storageRef.apiVersion).keys[0].value};'
   }
   dependsOn: [
     storageAccount

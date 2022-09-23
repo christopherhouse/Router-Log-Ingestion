@@ -37,6 +37,16 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   parent: blobServices
 }]
 
+resource shares 'Microsoft.Storage/storageAccounts/fileServices@2022-05-01' = {
+  name: 'default'
+  parent: storageAccount
+}
+
+resource share 'Microsoft.Storage/storageAccounts/fileServices/shares@2022-05-01' = {
+  name: 'content'
+  parent: shares
+}
+
 output name string = storageAccount.name
 output id string = storageAccount.id
 output apiVersion string = storageAccount.apiVersion
