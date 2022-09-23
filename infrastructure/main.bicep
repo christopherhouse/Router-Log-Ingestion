@@ -52,5 +52,6 @@ module keyVault 'modules/keyvault.bicep' = {
     location: location
     tenantId: tenantId
     adminObjectId: keyVaultAdminObjectId
+    homeIpAddress: homeIpAddress
   }
 }

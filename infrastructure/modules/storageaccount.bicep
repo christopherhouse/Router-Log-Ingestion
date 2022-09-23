@@ -20,7 +20,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
       ipRules: [
          {
           value: homeIpAddress
-          action: 'Allow'
          }
       ]
     }

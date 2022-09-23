@@ -1,5 +1,6 @@
 param keyVaultName string
 param adminObjectId string
+param homeIpAddress string
 param tenantId string
 param location string
 
@@ -23,6 +24,15 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
       }
     ]
     tenantId: tenantId
+    networkAcls: {
+      defaultAction: 'Deny'
+      bypass: 'AzureServices'
+      ipRules: [
+        {
+          value: homeIpAddress
+        }
+      ]
+    }
   }
 }
 
