@@ -29,19 +29,20 @@ namespace RouterLogIngestion.Functions.Entities
 
         public void AddLogEntryToQueue(IpTablesLogEntry logEntry)
         {
+            var maxQueueDepth = Convert.ToInt32(Environment.GetEnvironmentVariable("maxQueueDepth"));
             // TODO:  Add some smarts here, don't add a source IP to the queue more than once.  Hold duplicates back somehow?  Another entity?  Yeah, another entity :D
             GeocodeBatchQueue.Add(logEntry);
 
             _logger.LogInformation($"Added FW block from {logEntry.Src} to queue");
             _telemetryClient.TrackEvent("QueueItemAdded", new Dictionary<string, string>(){{"Source", logEntry.Src}, {"DestPort", logEntry.Dpt}, {"QueueDepth", GeocodeBatchQueue.Count.ToString()}});
             
-            if (GeocodeBatchQueue.Count > 99) // TODO: Make queue depth configurable
+            if (GeocodeBatchQueue.Count > (maxQueueDepth - 1)) // TODO: Make queue depth configurable
             {
                 _telemetryClient.TrackEvent("GeocodeBatchCreated");
                 var batchToRun = new List<IpTablesLogEntry>();
                 var counter = 0;
 
-                while (counter < 100)
+                while (counter < maxQueueDepth)
                 {
                     var itemToAdd = GeocodeBatchQueue[counter];
                     batchToRun.Add(itemToAdd);

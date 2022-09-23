@@ -57,11 +57,12 @@ public class GeocodeIpAddressBatchActivity
                 counter += 1;
             }
 
-            var resultArray = body.ToArray();
-
-            for (var i = 0; i < resultArray.Length; i++)
+            foreach (var item in logEntry)
             {
-                await data.AddAsync(new MondoBase(resultArray[i], logEntry[i]));
+                foreach (var gitem in body)
+                {
+                    await data.AddAsync(new MondoBase(gitem, item));
+                }
             }
 
             _telemetryClient.TrackEvent(@event);
