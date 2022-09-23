@@ -4,16 +4,19 @@ param logAnalyticsWorkspaceName string
 param appInsightsName string
 param keyVaultName string
 param keyVaultAdminObjectId string
+param cosmosAccountName string
+param databasesToCreate array
 
 param location string = resourceGroup().location
 param deploymentSuffix string = utcNow('MMddyyyy_HHmmss')
 
-var tenantId = subscription().tenantId
 var storageAccountDeploymentName = '${storageAccountName}-${deploymentSuffix}'
 var logAnalyticsDeploymentName = '${logAnalyticsWorkspaceName}-${deploymentSuffix}'
 var appinsightsDeploymentName = '${appInsightsName}-${deploymentSuffix}'
 var keyVaultDeploymentName = '${keyVaultName}-${deploymentSuffix}'
+var cosmosDeploymentName = '${cosmosAccountName}-${deploymentSuffix}'
 
+var tenantId = subscription().tenantId
 var functionContainers = [
   'azure-webjobs-secrets', 'azure-webjobs-hosts'
 ]
@@ -52,6 +55,17 @@ module keyVault 'modules/keyvault.bicep' = {
     location: location
     tenantId: tenantId
     adminObjectId: keyVaultAdminObjectId
+    homeIpAddress: homeIpAddress
+  }
+}
+
+module cosmosDb 'modules/cosmosaccount.bicep' = {
+  name: cosmosDeploymentName
+  params: {
+    location: location
+    containersToCreate: []
+    cosmosAccountName: cosmosAccountName
+    databasesToCreate: databasesToCreate
     homeIpAddress: homeIpAddress
   }
 }

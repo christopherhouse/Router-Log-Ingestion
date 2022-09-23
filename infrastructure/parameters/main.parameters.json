@@ -19,6 +19,14 @@
         },
         "keyVaultAdminObjectId": {
           "value": "e82dcaa8-7b11-40b7-b476-815c9026035f"
+        },
+        "cosmosAccountName": {
+            "value": "cmhcosmosacct02"
+        },
+        "databasesToCreate": {
+            "value": [
+              "cmhdb01"
+            ]
         }
     }
 }
