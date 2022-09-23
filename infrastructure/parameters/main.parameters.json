@@ -31,6 +31,12 @@
         },
         "partitionKeyPath": {
             "value": "/id"
+        },
+        "eventHubNamespaceName": {
+            "value": "cmhehns01"
+        },
+        "eventHubName": {
+            "value": "cmheh01"
         }
     }
 }

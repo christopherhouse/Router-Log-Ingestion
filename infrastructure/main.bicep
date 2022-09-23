@@ -8,6 +8,8 @@ param cosmosAccountName string
 param databaseName string
 param containerName string
 param partitionKeyPath string
+param eventHubNamespaceName string
+param eventHubName string
 
 param location string = resourceGroup().location
 param deploymentSuffix string = utcNow('MMddyyyy_HHmmss')
@@ -17,6 +19,7 @@ var logAnalyticsDeploymentName = '${logAnalyticsWorkspaceName}-${deploymentSuffi
 var appinsightsDeploymentName = '${appInsightsName}-${deploymentSuffix}'
 var keyVaultDeploymentName = '${keyVaultName}-${deploymentSuffix}'
 var cosmosDeploymentName = '${cosmosAccountName}-${deploymentSuffix}'
+var eventHubDeploymentName = '${eventHubNamespaceName}-${deploymentSuffix}'
 
 var tenantId = subscription().tenantId
 var functionContainers = [
@@ -70,5 +73,14 @@ module cosmosDb 'modules/cosmosaccount.bicep' = {
     cosmosAccountName: cosmosAccountName
     databaseName: databaseName
     homeIpAddress: homeIpAddress
+  }
+}
+
+module eventHub 'modules/eventhub.bicep' = {
+  name: eventHubDeploymentName
+  params: {
+    location: location
+    eventHubName: eventHubName
+    eventHubNamespaceName: eventHubNamespaceName
   }
 }
