@@ -37,6 +37,9 @@
         },
         "eventHubName": {
             "value": "cmheh01"
+        },
+        "functionAppName": {
+            "value": "cmhfunc01"
         }
     }
 }

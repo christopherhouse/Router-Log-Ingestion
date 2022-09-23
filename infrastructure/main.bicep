@@ -10,6 +10,7 @@ param containerName string
 param partitionKeyPath string
 param eventHubNamespaceName string
 param eventHubName string
+param functionAppName string
 
 param location string = resourceGroup().location
 param deploymentSuffix string = utcNow('MMddyyyy_HHmmss')
@@ -20,6 +21,7 @@ var appinsightsDeploymentName = '${appInsightsName}-${deploymentSuffix}'
 var keyVaultDeploymentName = '${keyVaultName}-${deploymentSuffix}'
 var cosmosDeploymentName = '${cosmosAccountName}-${deploymentSuffix}'
 var eventHubDeploymentName = '${eventHubNamespaceName}-${deploymentSuffix}'
+var functionAppDeploymentName = '${functionAppName}-${deploymentSuffix}'
 
 var tenantId = subscription().tenantId
 var functionContainers = [
@@ -83,4 +85,22 @@ module eventHub 'modules/eventhub.bicep' = {
     eventHubName: eventHubName
     eventHubNamespaceName: eventHubNamespaceName
   }
+}
+
+resource storageRef 'Microsoft.Storage/storageAccounts@2022-05-01' existing = {
+  name: storageAccountName
+}
+
+module functionApp 'modules/functionapp.bicep' = {
+  name: functionAppDeploymentName
+  params: {
+    location: location
+    appInsightsConnectionString: appInsights.outputs.connectionString
+    appInsightsInstrumentationKey: appInsights.outputs.instrumentationKey
+    functionAppName: functionAppName
+    storageConnectionString: listKeys(resourceId(subscription().subscriptionId, resourceGroup().name, storageRef.type, storageRef.name), storageRef.apiVersion).keys[0].value
+  }
+  dependsOn: [
+    storageAccount
+  ]
 }
