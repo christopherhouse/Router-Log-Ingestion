@@ -1,4 +1,6 @@
 param keyVaultName string
+param adminObjectId string
+param tenantId string
 param location string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
@@ -9,7 +11,18 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
       family: 'A'
       name: 'standard'
     }
-    tenantId: subscription().tenantId
+    accessPolicies: [
+      {
+        objectId: adminObjectId
+        permissions: {
+          certificates: [ 'all' ]
+          secrets: [ 'all' ]
+          keys: [ 'all' ]
+        }
+        tenantId: tenantId
+      }
+    ]
+    tenantId: tenantId
   }
 }
 

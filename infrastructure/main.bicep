@@ -3,10 +3,12 @@ param homeIpAddress string
 param logAnalyticsWorkspaceName string
 param appInsightsName string
 param keyVaultName string
+param keyVaultAdminObjectId string
 
 param location string = resourceGroup().location
 param deploymentSuffix string = utcNow('MMddyyyy_HHmmss')
 
+var tenantId = subscription().tenantId
 var storageAccountDeploymentName = '${storageAccountName}-${deploymentSuffix}'
 var logAnalyticsDeploymentName = '${logAnalyticsWorkspaceName}-${deploymentSuffix}'
 var appinsightsDeploymentName = '${appInsightsName}-${deploymentSuffix}'
@@ -48,5 +50,7 @@ module keyVault 'modules/keyvault.bicep' = {
   params: {
     keyVaultName: keyVaultName
     location: location
+    tenantId: tenantId
+    adminObjectId: keyVaultAdminObjectId
   }
 }
