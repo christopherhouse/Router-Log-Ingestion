@@ -15,13 +15,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
     allowBlobPublicAccess: false
     allowSharedKeyAccess: true
     networkAcls: {
-      defaultAction: 'Deny'
-      bypass: 'AzureServices'
-      ipRules: [
-         {
-          value: homeIpAddress
-         }
-      ]
+      defaultAction: 'Allow'
+      // bypass: 'AzureServices'
+      // ipRules: [
+      //    {
+      //     value: homeIpAddress
+      //    }
+      // ]
     }
     supportsHttpsTrafficOnly: true
   }
